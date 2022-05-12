@@ -1,0 +1,84 @@
+﻿<Window x:Class="EkCommunicationClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:communicationview="clr-namespace:EkCommunicationClient.CommunicationView" 
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:viewModels="clr-namespace:EkCommunicationClient.EkViewModel"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="500" Width="1100" FontSize="16">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
+        </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <ResourceDictionary Source="pack://application:,,,/EkCommunicationClient;component/EkWpfStyle/TabControl.xaml"/>
+        </Grid.Resources>
+        <TreeView Grid.Row="0" Grid.Column="0" >
+            <TreeViewItem Header="TreeView">
+                <TreeViewItem>
+                    <TreeViewItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <Viewbox Width="16" Height="16">
+                                <Canvas Width="24" Height="24">
+                                    <Path Data="M20,10C22,13 17,22 15,22C13,22 13,21 12,21C11,21 11,22 9,22C7,22 2,13 4,10C6,7 9,7 11,8V5C5.38,8.07 4.11,3.78 4.11,3.78C4.11,3.78 6.77,0.19 11,5V3H13V8C15,7 18,7 20,10Z" Fill="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type TreeViewItem}}, Path=Foreground}" />
+                                </Canvas>
+                            </Viewbox>
+                            <TextBlock Margin="8 0 0 0" Text="Apple" />
+                        </StackPanel>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+                <TreeViewItem Header="Banana" />
+                <TreeViewItem Header="Grape">
+                    <TextBlock>
+                <Run Text="Grapes for us" />
+                    </TextBlock>
+                </TreeViewItem>
+                <TreeViewItem Header="Peach" />
+                <TreeViewItem Header="Pear" />
+                <TreeViewItem Header="Strawberry" />
+            </TreeViewItem>
+            <TreeViewItem Header="Socket">
+                <TreeViewItem>
+                    <TreeViewItem.Header>
+                        <Button Content="Socket" Click="JumpPage_Click" ></Button>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+                <TreeViewItem>
+                    <TreeViewItem.Header>
+                        <Button Content="TCP" Click="JumpPage_Click" ></Button>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+                <TreeViewItem>
+                    <TreeViewItem.Header>
+                        <Button Content="UDP" Click="JumpPage_Click" ></Button>
+                    </TreeViewItem.Header>
+                </TreeViewItem>
+            </TreeViewItem>
+        </TreeView>
+        <TabControl Name="Tc_Main" Grid.Column="1" TabStripPlacement="Top"  Style="{StaticResource MaterialDesignNavigatilRailTabControl}" >
+            <TabItem Header="default">
+                <Label Content="默认样式标签页"></Label>
+            </TabItem>
+            <TabItem Header="Tab" Style="{StaticResource EKTabItem}">
+                <StackPanel>
+                    <Label Content="测试标签页面"></Label>
+                    <UserControl ContentTemplate="{StaticResource TestDataTemp}" />
+                    <ListBox x:Name="listBoxCars" Width="180" ItemTemplate="{StaticResource TestListDatTemp}"/>
+                </StackPanel>
+            </TabItem>
+            <TabItem  Header="TCP" Style="{StaticResource EKTabItem}">
+                <communicationview:TcpControl/>
+            </TabItem>
+        </TabControl>
+        <StackPanel Grid.Column="2">
+            <GroupBox Header="日志信息" Height="480">
+                <ScrollViewer Name="Scroll_Log"  ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                    <TextBox Name="TB_Log" FontSize="14" Cursor="Arrow" ></TextBox>
+                </ScrollViewer>
+            </GroupBox>
+        </StackPanel>
+    </Grid>
+</Window>

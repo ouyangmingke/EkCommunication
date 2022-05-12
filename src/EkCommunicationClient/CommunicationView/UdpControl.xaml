@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="EkCommunicationClient.CommunicationView.UdpControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel  Orientation="Vertical" >
+            <StackPanel Orientation="Horizontal">
+                <Label Content="IP:" VerticalContentAlignment="Center" />
+                <TextBox Name="Txt_UdpIp" Text="192.168.11.88" Width="120" Margin="10 0 10 0" VerticalContentAlignment="Center" />
+                <Label Content="Port:" Margin="10 0 10 0" VerticalContentAlignment="Center"/>
+                <TextBox Name="Txt_UdpPort" Text="666" Width="100" Margin="10 0 10 0" VerticalContentAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" >
+                <Label Content="发送消息：" VerticalContentAlignment="Center"/>
+                <TextBox  HorizontalAlignment="Left" Margin="10 0 10 0" Name="TB_UdpSendClient" Width="200"/>
+                <Button Width="150" Margin="10 0 10 0" Content="发送Udp消息" Click="Send_Click"  />
+                <Button Width="150" Content="接收Udp消息" Click="Receive_Click"  BorderBrush="Black" BorderThickness="1" VerticalContentAlignment="Center"/>
+            </StackPanel>
+            <ScrollViewer Name="Scroll_UdpClient"  ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                <TextBox  HorizontalAlignment="Left" Name="TB_UdpClient" Width="700" Height="200"/>
+            </ScrollViewer>
+            <Label Name="Notes"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
