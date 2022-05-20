@@ -6,12 +6,12 @@
         xmlns:communicationview="clr-namespace:EkCommunicationClient.CommunicationView" 
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" xmlns:viewModels="clr-namespace:EkCommunicationClient.EkViewModel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="1100" FontSize="16">
+        Title="MainWindow" Height="500" Width="1100" >
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="300"/>
+            <ColumnDefinition Width="100"/>
         </Grid.ColumnDefinitions>
         <Grid.Resources>
             <ResourceDictionary Source="pack://application:,,,/EkCommunicationClient;component/EkWpfStyle/TabControl.xaml"/>
@@ -57,28 +57,38 @@
                     </TreeViewItem.Header>
                 </TreeViewItem>
             </TreeViewItem>
+            <TreeViewItem >
+                <TreeViewItem.Header>
+                    <Button Content="Mqtt" Click="JumpPage_Click" ></Button>
+                </TreeViewItem.Header>
+            </TreeViewItem>
+            <TreeViewItem >
+                <TreeViewItem.Header>
+                    <Button Content="OpcUa" Click="JumpPage_Click" ></Button>
+                </TreeViewItem.Header>
+            </TreeViewItem>
         </TreeView>
-        <TabControl Name="Tc_Main" Grid.Column="1" TabStripPlacement="Top"  Style="{StaticResource MaterialDesignNavigatilRailTabControl}" >
-            <TabItem Header="default">
-                <Label Content="默认样式标签页"></Label>
-            </TabItem>
-            <TabItem Header="Tab" Style="{StaticResource EKTabItem}">
-                <StackPanel>
-                    <Label Content="测试标签页面"></Label>
-                    <UserControl ContentTemplate="{StaticResource TestDataTemp}" />
-                    <ListBox x:Name="listBoxCars" Width="180" ItemTemplate="{StaticResource TestListDatTemp}"/>
-                </StackPanel>
-            </TabItem>
-            <TabItem  Header="TCP" Style="{StaticResource EKTabItem}">
-                <communicationview:TcpControl/>
-            </TabItem>
-        </TabControl>
-        <StackPanel Grid.Column="2">
-            <GroupBox Header="日志信息" Height="480">
+        <DockPanel  Grid.Column="1">
+            <TabControl Name="Tc_Main"  DockPanel.Dock="Top" TabStripPlacement="Top"  Style="{StaticResource MaterialDesignNavigatilRailTabControl}" >
+                <TabItem Header="default">
+                    <Label Content="默认样式标签页"></Label>
+                </TabItem>
+                <TabItem Header="Tab" Style="{StaticResource EKTabItem}">
+                    <StackPanel>
+                        <Label Content="测试标签页面"></Label>
+                        <UserControl ContentTemplate="{StaticResource TestDataTemp}" />
+                        <ListBox x:Name="listBoxCars" Width="180" ItemTemplate="{StaticResource TestListDatTemp}"/>
+                    </StackPanel>
+                </TabItem>
+                <TabItem  Header="TCP" Style="{StaticResource EKTabItem}">
+                    <communicationview:TcpControl/>
+                </TabItem>
+            </TabControl>
+            <GroupBox Header="日志信息" Height="100" DockPanel.Dock="Bottom">
                 <ScrollViewer Name="Scroll_Log"  ScrollViewer.VerticalScrollBarVisibility="Auto" >
                     <TextBox Name="TB_Log" FontSize="14" Cursor="Arrow" ></TextBox>
                 </ScrollViewer>
             </GroupBox>
-        </StackPanel>
+        </DockPanel>
     </Grid>
 </Window>

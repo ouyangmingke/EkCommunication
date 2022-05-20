@@ -19,7 +19,7 @@
                     <Label Content="发送消息：" VerticalContentAlignment="Center"/>
                     <TextBox  HorizontalAlignment="Left" Margin="10 0 10 0" Name="TB_TcpSendClient" Width="200"/>
                     <Button Width="150" Margin="10 0 10 0" Content="发送TCP消息" Click="Send_Click"  />
-                    <Button Width="150" Margin="10 0 10 0" Content="接收TCP消息" Click="TcpReceive_Click"  />
+                    <Button Width="150" Margin="10 0 10 0" Content="接收TCP消息" Click="Receive_Click"  />
                 </StackPanel>
                 <ScrollViewer Name="Scroll_TcpClient"  ScrollViewer.VerticalScrollBarVisibility="Auto" >
                     <TextBox  HorizontalAlignment="Left" Name="TB_TcpClient" Width="700" Height="200" BorderBrush="Black" BorderThickness="1" />

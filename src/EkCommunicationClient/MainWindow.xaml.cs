@@ -122,6 +122,44 @@ namespace EkCommunicationClient
                         Tc_Main.Items.Add(udpItem);
                         Tc_Main.SelectedItem = udpItem;
                         break;
+                    case "Mqtt":
+                        foreach (var item in Tc_Main.Items)
+                        {
+                            if (item is TabItem selec)
+                            {
+                                if (selec.Header.ToString() == "Mqtt")
+                                {
+                                    Tc_Main.SelectedItem = selec;
+                                    return;
+                                }
+                            }
+                        }
+                        var mqttItem = new TabItem();
+                        mqttItem.Header = "Mqtt";
+                        mqttItem.Style = myResourceDictionary["EKTabItem"] as Style;
+                        mqttItem.Content = new MqttControl();
+                        Tc_Main.Items.Add(mqttItem);
+                        Tc_Main.SelectedItem = mqttItem;
+                        break;                    
+                    case "OpcUa":
+                        foreach (var item in Tc_Main.Items)
+                        {
+                            if (item is TabItem selec)
+                            {
+                                if (selec.Header.ToString() == "OpcUa")
+                                {
+                                    Tc_Main.SelectedItem = selec;
+                                    return;
+                                }
+                            }
+                        }
+                        var OpcUaItem = new TabItem();
+                        OpcUaItem.Header = "OpcUa";
+                        OpcUaItem.Style = myResourceDictionary["EKTabItem"] as Style;
+                        OpcUaItem.Content = new OpcUaControl();
+                        Tc_Main.Items.Add(OpcUaItem);
+                        Tc_Main.SelectedItem = OpcUaItem;
+                        break;
                     default:
                         break;
 
