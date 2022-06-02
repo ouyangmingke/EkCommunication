@@ -67,6 +67,11 @@
                     <Button Content="OpcUa" Click="JumpPage_Click" ></Button>
                 </TreeViewItem.Header>
             </TreeViewItem>
+            <TreeViewItem >
+                <TreeViewItem.Header>
+                    <Button Content="RabbitMQ" Click="JumpPage_Click" ></Button>
+                </TreeViewItem.Header>
+            </TreeViewItem>
         </TreeView>
         <DockPanel  Grid.Column="1">
             <TabControl Name="Tc_Main"  DockPanel.Dock="Top" TabStripPlacement="Top"  Style="{StaticResource MaterialDesignNavigatilRailTabControl}" >

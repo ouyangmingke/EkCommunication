@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net6.0-windows8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\EkCommunication.Mqtt\EkCommunication.Mqtt.csproj" />
     <ProjectReference Include="..\EkCommunication.OpcUa\EkCommunication.OpcUa.csproj" />
+    <ProjectReference Include="..\EkCommunication.RabbitMQ\EkCommunication.RabbitMQ.csproj" />
     <ProjectReference Include="..\EkCommunication\EkCommunication.csproj" />
   </ItemGroup>
 
@@ -24,6 +25,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Update="CommunicationView\RabbitMQControl.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="CommunicationView\SocketControl.xaml">
       <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
       <SubType>Designer</SubType>

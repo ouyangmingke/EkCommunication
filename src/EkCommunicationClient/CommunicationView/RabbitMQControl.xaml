@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="EkCommunicationClient.CommunicationView.RabbitMQControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <Label Content="IP:" />
+                <TextBox Name="Txt_Ip" Width="120" Text="localhost" Margin="10 0 10 0" />
+                <Label Content="Port:" Margin="10 0 10 0" />
+                <TextBox Name="Txt_Port" Width="100" Text="666" Margin="10 0 10 0" />
+            </StackPanel>
+            <StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="发送消息：" VerticalContentAlignment="Center"/>
+                    <TextBox  HorizontalAlignment="Left" Margin="10 0 10 0" Name="TB_SendClient" Width="120"/>
+                    <Button Width="150" Margin="10 0 10 0" Content="发送RabbitMq消息" Click="Send_Click"  />
+                </StackPanel>
+                <ScrollViewer Name="Scroll_Client"  ScrollViewer.VerticalScrollBarVisibility="Auto" >
+                    <TextBox  HorizontalAlignment="Left" Name="TB_Client" Width="700" Height="200" BorderBrush="Black" BorderThickness="1" />
+                </ScrollViewer>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</UserControl>
