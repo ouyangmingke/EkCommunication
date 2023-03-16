@@ -27,24 +27,28 @@ namespace EkCommunicationClient.CommunicationView
 
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            var ip = Txt_UdpIp.Text;
-            var port = int.Parse(Txt_UdpPort.Text);
-            var msg = TB_UdpSendClient.Text;
-            Task.Run(async () =>
-            {
-                //await   SocketServerHelper.Instance.SendMessageAsync("UDP", msg, ip, port);
-                await UdpClientHelper.Instance.SendMessageAsync(msg, ip, port);
-                //AsynchronousClient.StartClient();
-            });
+            throw new Exception($"未实现");
+
+            //var ip = Txt_UdpIp.Text;
+            //var port = int.Parse(Txt_UdpPort.Text);
+            //var msg = TB_UdpSendClient.Text;
+            //Task.Run(async () =>
+            //{
+            //    //await   SocketClientHelper.Instance.StartTcpListenerAsync("UDP", msg, ip, port);
+            //    await UdpClientHelper.Instance.SendMessageAsync(msg, ip, port);
+            //    //AsynchronousClient.StartClient();
+            //});
         }
         private void Receive_Click(object sender, RoutedEventArgs e)
         {
-            TB_UdpClient.Dispatcher.BeginInvoke(new Action(() =>
-           {
-               var ip = Txt_UdpIp.Text;
-               var port = int.Parse(Txt_UdpPort.Text);
-               Task.Run(async () => { await UdpClientHelper.Instance.ReceiveMessageAsync(ip, port); });
-           }));
+            throw new Exception($"未实现");
+
+            // TB_UdpClient.Dispatcher.BeginInvoke(new Action(() =>
+            //{
+            //    var ip = Txt_UdpIp.Text;
+            //    var port = int.Parse(Txt_UdpPort.Text);
+            //    Task.Run(async () => { await UdpClientHelper.Instance.ReceiveMessageAsync(ip, port); });
+            //}));
         }
 
 

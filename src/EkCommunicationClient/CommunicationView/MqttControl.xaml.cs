@@ -16,29 +16,28 @@ namespace EkCommunicationClient.CommunicationView
         {
             InitializeComponent();
         }
-        #region Socket
-        private void Send_Click(object sender, RoutedEventArgs e)
+        private void Conn_Click(object sender, RoutedEventArgs e)
         {
             MqttClientHelper.Instance.Conn();
 
         }
-        private void Receive_Click(object sender, RoutedEventArgs e)
+        private void Send_Click(object sender, RoutedEventArgs e)
         {
-            TB_SocketClient.Dispatcher.BeginInvoke(new Action(async () =>
+            TB_Topic.Dispatcher.BeginInvoke(new Action(async () =>
             {
-                var ip = Txt_SocketIp.Text;
-                var port = int.Parse(Txt_SocketPort.Text);
-                var socketState = Cb_socketState.Text;
-                var msg = await SocketClientHelper.Instance.ReceiveMessageAsync(socketState, ip, port);
 
-                if (TB_SocketClient.LineCount > 100)
-                {
-                    TB_SocketClient.Clear();
-                }
-                TB_SocketClient.Text += $"{msg}\n";
-                Scroll_SocketClient.ScrollToEnd();
+                await MqttClientHelper.Instance.SendMessageAsync(TB_Topic.Text.Trim(), TB_Content.Text.Trim());
+
             }));
         }
-        #endregion
+        private void Receive_Click(object sender, RoutedEventArgs e)
+        {
+            TB_Topic.Dispatcher.BeginInvoke(new Action(async () =>
+            {
+                await MqttClientHelper.Instance.ReceiveMessageAsync(TB_Topic.Text.Trim());
+            }));
+        }
+
+
     }
 }

@@ -13,21 +13,17 @@
                 <TextBox Name="Txt_SocketIp" Width="120" Text="192.168.11.88" Margin="10 0 10 0" />
                 <Label Content="Port:" Margin="10 0 10 0" />
                 <TextBox Name="Txt_SocketPort" Width="100" Text="666" Margin="10 0 10 0" />
+                <Button Width="150" Margin="10 0 10 0" Content="连接" Click="Conn_Click"  />
             </StackPanel>
             <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="发送消息：" VerticalContentAlignment="Center"/>
-                    <TextBox  HorizontalAlignment="Left" Margin="10 0 10 0" Name="TB_SocketSendClient" Width="120"/>
-                    <ComboBox Name="Cb_socketState" materialDesign:HintAssist.Hint="选择Socket模式" materialDesign:HintAssist.HintOpacity=".26" IsEditable="True">
-                        <ComboBoxItem Content="TCP" />
-                        <ComboBoxItem Content="UDP"  IsSelected="True" />
-                    </ComboBox>
-                    <Button Width="150" Margin="10 0 10 0" Content="连接Mqtt" Click="Send_Click"  />
-                    <Button Width="150" Margin="10 0 10 0" Content="接收Mqtt消息" Click="Receive_Click"  />
+                <StackPanel Orientation="Horizontal" Cursor="">
+                    <Label Content="Topic：" VerticalContentAlignment="Center"/>
+                    <TextBox  HorizontalAlignment="Left" Margin="10 0 10 0" Name="TB_Topic" Width="120" Text="topic"/>
+                    <Label Content="消息：" VerticalContentAlignment="Center"/>
+                    <TextBox  HorizontalAlignment="Left" Margin="10 0 10 0" Name="TB_Content" Width="120"/>
+                    <Button Width="150" Margin="10 0 10 0" Content="订阅Mqtt消息" Click="Receive_Click"  />
+                    <Button Width="150" Margin="10 0 10 0" Content="发送Mqtt消息" Click="Send_Click"  />
                 </StackPanel>
-                <ScrollViewer Name="Scroll_SocketClient"  ScrollViewer.VerticalScrollBarVisibility="Auto" >
-                    <TextBox  HorizontalAlignment="Left" Name="TB_SocketClient" Width="700" Height="200" BorderBrush="Black" BorderThickness="1" />
-                </ScrollViewer>
             </StackPanel>
         </StackPanel>
     </Grid>

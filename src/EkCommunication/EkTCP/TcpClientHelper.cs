@@ -1,6 +1,4 @@
-﻿
-using EkTools.EkLog;
-
+﻿using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -9,58 +7,63 @@ namespace EkCommunication.EkTCP
 
     public class TcpClientHelper
     {
-        private TcpClientHelper()
+        public TcpClientHelper(string ip, int port)
         {
-
+            _targetIpEndPoint = new IPEndPoint(IPAddress.Parse(ip), port);
+            tcpClient = new TcpClient();
         }
-        private static readonly TcpClientHelper Current = new TcpClientHelper();
-        public static TcpClientHelper Instance => Current;
+        /// <summary>
+        /// 目标地址
+        /// </summary>
+        readonly IPEndPoint _targetIpEndPoint;
+        private TcpClient tcpClient;
 
-        AutoResetEvent autoResetEvent = new AutoResetEvent(true);
-        public async Task<string> ReceiveMessageAsync(string ip, int port)
+        ~TcpClientHelper()
         {
-            var res = "";
+            tcpClient.Dispose();
+        }
+        /// <summary>
+        /// 线程锁定
+        /// </summary>
+        AutoResetEvent autoResetEvent = new AutoResetEvent(true);
+
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        public async Task<bool> SendMessage(string message)
+        {
             try
             {
                 autoResetEvent.WaitOne();
                 // 创建 TCP 客户端实例并连接到指定 终结点
-                var client = new TcpClient(ip, port);
-                EkLog.Information($"创建tcp客户端 连接目标为： {client.Client.RemoteEndPoint}");
-                // 获取当前连接的网络传输流
-                var networkStream = client.GetStream();
-                int bytesRead = 0;
-                int x = 0;
-                var stringBuilder = new StringBuilder();
-                while (x < 5)
+                try
                 {
-                    // 等待 服务端发送数据 若
-                    if (networkStream.DataAvailable)
-                    {
-                        byte[] bytes = new byte[1024];
-                        bytesRead = await networkStream.ReadAsync(bytes, 0, 1024);
-                        var temp = Encoding.UTF8.GetString(bytes, 0, bytesRead);
-                        // 拼接获取的数据
-                        stringBuilder.Append(temp);
-                        if (temp.EndsWith("EKEND"))
-                        {
-                            break;
-                        }
-                    }
-                    // 超时停止读取
-                    Thread.Sleep(1000);
-                    x++;
+                    if (!tcpClient.Connected)
+                        tcpClient.Connect(_targetIpEndPoint);
                 }
-                res = stringBuilder.ToString();
-                EkLog.Information("读取完成");
-                networkStream.Close();
-                client.Close();
+                catch (Exception w)
+                {
+                    Console.WriteLine("连接失败" + w.Message + "\n");
+                    autoResetEvent.Set();
+                    return false;
+                }
+                // 获取当前连接的网络传输流
+                var networkStream = tcpClient.GetStream();
+                byte[] data = Encoding.UTF8.GetBytes(message);
+                // 写入数据
+                await networkStream.WriteAsync(data, 0, data.Length);
             }
             catch (Exception e)
             {
-                EkLog.Error(e.Message);
+                Console.WriteLine(e.Message + "\n");
+                // 断开连接后需要创建新的TCP客户端
+                tcpClient = new TcpClient();
+                return false;
             }
             autoResetEvent.Set();
-            return res;
+            return true;
         }
     }
 }

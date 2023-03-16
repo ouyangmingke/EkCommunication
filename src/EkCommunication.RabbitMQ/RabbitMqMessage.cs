@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace EkCommunication.RabbitMQ
+﻿namespace EkCommunication.RabbitMQ
 {
     /// <summary>
     /// 日志通知

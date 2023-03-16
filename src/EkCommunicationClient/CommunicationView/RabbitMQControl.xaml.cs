@@ -21,12 +21,12 @@ namespace EkCommunicationClient.CommunicationView
         private RabbitMQClient rabbitMQClient;
         private void RabbitMQ_Loaded(object sender, RoutedEventArgs e)
         {
-            RabbitMqMessage.RabbitMqNotify += RabbitMqMessage_RabbitMqNotify;
-            rabbitMQServer = new RabbitMQServer("Service");
-            rabbitMQClient = new RabbitMQClient("Service");
-            rabbitMQServer.Init();
-            rabbitMQServer.ReplyQueue();
-            rabbitMQClient.Receive();
+            //RabbitMqMessage.RabbitMqNotify += RabbitMqMessage_RabbitMqNotify; 
+            //rabbitMQServer = new RabbitMQServer("Service");
+            //rabbitMQClient = new RabbitMQClient("Service");
+            //rabbitMQServer.Init();
+            //rabbitMQServer.ReplyQueue();
+            //rabbitMQClient.Receive();
         }
 
         private void RabbitMqMessage_RabbitMqNotify(string msg)

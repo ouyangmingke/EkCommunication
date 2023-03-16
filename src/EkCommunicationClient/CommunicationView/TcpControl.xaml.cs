@@ -29,28 +29,29 @@ namespace EkCommunicationClient.CommunicationView
         #region TCP
         private void Send_Click(object sender, RoutedEventArgs e)
         {
-            var ip = Txt_TcpIp.Text;
-            var port = int.Parse(Txt_TcpPort.Text);
-            var msg = TB_TcpSendClient.Text;
-            Task.Run(async () =>
-            {
-                await TcpServerHelper.Instance.SendMessageAsync(msg, ip, port);
-            });
+            throw new Exception($"未实现");
+
+            //var ip = Txt_TcpIp.Text;
+            //var port = int.Parse(Txt_TcpPort.Text);
+            //var msg = TB_TcpSendClient.Text;
+            //Task.Run(async () =>
+            //{
+            //    await TcpClientHelper.Instance.SendMessageAsync(msg, ip, port);
+            //});
         }
         private void Receive_Click(object sender, RoutedEventArgs e)
         {
-            TB_TcpClient.Dispatcher.BeginInvoke(new Action(async () =>
-            {
-                var ip = Txt_TcpIp.Text;
-                var port = int.Parse(Txt_TcpPort.Text);
-                var msg = await TcpClientHelper.Instance.ReceiveMessageAsync(ip, port);
-                if (TB_TcpClient.LineCount > 100)
-                {
-                    TB_TcpClient.Clear();
-                }
-                TB_TcpClient.Text += $"{msg}\n";
-                Scroll_TcpClient.ScrollToEnd();
-            }));
+            throw new Exception($"未实现");
+
+            //TB_TcpClient.Dispatcher.BeginInvoke(new Action(async () =>
+            //{
+            //    var ip = Txt_TcpIp.Text;
+            //    var port = int.Parse(Txt_TcpPort.Text);
+            //    while (true)
+            //    {
+            //        await TcpServerHelper.Instance.StartTcpListenerAsync(ip, port);
+            //    }
+            //}));
         }
         #endregion
     }
