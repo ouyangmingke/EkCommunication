@@ -12,13 +12,10 @@ namespace EkCommunication.OpcUa.OpcUaTool
 {
     public class OPCUAHelper
     {
-        public OPCUAHelper(ILoggerFactory loggerFactory)
+        public OPCUAHelper()
         {
             opcUaClient = new OpcUaClient();
-            Logger = loggerFactory.CreateLogger(nameof(OPCUAHelper));
         }
-
-        protected readonly ILogger Logger;
 
         #region   基础参数
         //OPCUA客户端
@@ -54,7 +51,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"连接失败！！！{ex.Message}");
+                    ClientUtils.HandleException("连接失败！！！", ex);
                 }
             }
         }
@@ -78,7 +75,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"连接失败！！！{ex.Message}");
+                    ClientUtils.HandleException("连接失败！！！", ex);
                 }
             }
 
@@ -104,7 +101,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"连接失败！！！{ex.Message}");
+                    ClientUtils.HandleException("连接失败！！！", ex);
                 }
             }
         }
@@ -123,7 +120,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"关闭连接失败！！！{ex.Message}");
+                    ClientUtils.HandleException("关闭连接失败！！！", ex);
                 }
 
             }
@@ -147,7 +144,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"读取失败！！！{ex.Message}");
+                    ClientUtils.HandleException("读取失败！！！", ex);
                 }
             }
 
@@ -171,7 +168,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"读取失败！！！{ex.Message}");
+                    ClientUtils.HandleException("读取失败！！！", ex);
                 }
             }
 
@@ -200,7 +197,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"读取失败！！！{ex.Message}");
+                    ClientUtils.HandleException("读取失败！！！", ex);
                 }
             }
 
@@ -225,7 +222,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"读取失败！！！{ex.Message}");
+                    ClientUtils.HandleException("读取失败！！！", ex);
                 }
             }
 
@@ -237,7 +234,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
         /// </summary>
         /// <param name="nodeIds">节点列表</param>
         /// <returns>返回节点数据字典</returns>
-        public async Task<List<DataValue>> GetBatchNodeDatasOfAsync(List<NodeId> nodeIdList)
+        public async Task<List<DataValue>> GetBatchNodeDatasAsync(List<NodeId> nodeIdList)
         {
             if (nodeIdList != null && nodeIdList.Count > 0 && ConnectStatus)
             {
@@ -247,13 +244,41 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"读取失败！！！{ex.Message}");
+                    ClientUtils.HandleException("读取失败！！！", ex);
                 }
             }
 
             return null;
         }
 
+        /// <summary>
+        /// 获取到批量节点数据【异步读取】
+        /// </summary>
+        /// <param name="nodeIds">节点列表</param>
+        /// <returns>返回节点数据字典</returns>
+        public async Task<Dictionary<string, DataValue>> GetBatchNodeDatasByDictionaryAsync(List<NodeId> nodeIdList)
+        {
+            Dictionary<string, DataValue> dicNodeInfo = new Dictionary<string, DataValue>();
+            if (nodeIdList != null && nodeIdList.Count > 0 && ConnectStatus)
+            {
+                try
+                {
+                    List<DataValue> dataValues = await opcUaClient.ReadNodesAsync(nodeIdList.ToArray());
+
+                    int count = nodeIdList.Count;
+                    for (int i = 0; i < count; i++)
+                    {
+                        AddInfoToDic(dicNodeInfo, nodeIdList[i].ToString(), dataValues[i]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ClientUtils.HandleException("读取失败！！！", ex);
+                }
+            }
+
+            return dicNodeInfo;
+        }
 
 
 
@@ -275,7 +300,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 catch (Exception ex)
                 {
                     string str = "获取当前： " + nodeId + "  节点的相关节点失败！！！";
-                    Logger?.LogError($"{str}{ex.Message}");
+                    ClientUtils.HandleException(str, ex);
                 }
             }
 
@@ -300,8 +325,7 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 catch (Exception ex)
                 {
                     string str = "读取节点；" + nodeId + "  的所有属性失败！！！";
-                    Logger?.LogError($"{str}{ex.Message}");
-
+                    ClientUtils.HandleException(str, ex);
                 }
             }
 
@@ -330,7 +354,8 @@ namespace EkCommunication.OpcUa.OpcUaTool
                     catch (Exception ex)
                     {
                         string str = "当前节点：" + nodeId + "  写入失败";
-                        Logger?.LogError($"{str}{ex.Message}");
+                        ClientUtils.HandleException(str, ex);
+
                     }
                 }
 
@@ -358,7 +383,8 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"批量写入节点失败！！！ {ex.Message}");
+                    ClientUtils.HandleException("批量写入节点失败！！！", ex);
+
                 }
             }
             return success;
@@ -386,12 +412,10 @@ namespace EkCommunication.OpcUa.OpcUaTool
                     catch (Exception ex)
                     {
                         string str = "当前节点：" + nodeId + "  写入失败";
-                        Logger?.LogError($"{str}{ex.Message}");
+                        ClientUtils.HandleException(str, ex);
                     }
                 }
-
             }
-
             return success;
         }
 
@@ -415,7 +439,8 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"读取失败 {ex.Message}");
+                    ClientUtils.HandleException("读取失败", ex);
+
                 }
             }
 
@@ -443,7 +468,8 @@ namespace EkCommunication.OpcUa.OpcUaTool
                     }
                     catch (Exception ex)
                     {
-                        Logger?.LogError($"读取失败 {ex.Message}");
+                        ClientUtils.HandleException("读取失败", ex);
+
                     }
                 }
 
@@ -470,7 +496,8 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 catch (Exception ex)
                 {
                     string str = "订阅节点：" + nodeId + " 数据失败！！！";
-                    Logger?.LogError($"{str}{ex.Message}");
+                    ClientUtils.HandleException(str, ex);
+
 
                 }
             }
@@ -495,7 +522,8 @@ namespace EkCommunication.OpcUa.OpcUaTool
                     catch (Exception ex)
                     {
                         string str = "取消 " + key + " 的订阅失败";
-                        Logger?.LogError($"{str}{ex.Message}");
+                        ClientUtils.HandleException(str, ex);
+
                     }
 
                 }
@@ -524,7 +552,8 @@ namespace EkCommunication.OpcUa.OpcUaTool
                     catch (Exception ex)
                     {
                         string str = "批量订阅节点数据失败！！！";
-                        Logger?.LogError($"{str}{ex.Message}");
+                        ClientUtils.HandleException(str, ex);
+
                     }
                 }
             }
@@ -548,11 +577,9 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"取消所有的节点数据订阅失败！！！{ex.Message}");
+                    ClientUtils.HandleException("取消所有的节点数据订阅失败！！！", ex);
                 }
-
             }
-
             return success;
         }
 
@@ -574,14 +601,11 @@ namespace EkCommunication.OpcUa.OpcUaTool
                 }
                 catch (Exception ex)
                 {
-                    Logger?.LogError($"取消节点数据订阅失败！！！{ex.Message}");
+                    ClientUtils.HandleException("取消节点数据订阅失败！！！", ex);
                 }
-
             }
-
             return success;
         }
-
         #endregion
 
 
@@ -607,7 +631,6 @@ namespace EkCommunication.OpcUa.OpcUaTool
                     dic[key] = dataValue;
                 }
             }
-
         }
 
         #endregion
