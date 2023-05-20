@@ -21,3 +21,35 @@ IPHostEntry ipHostInfo = Dns.Resolve("host.contoso.com");
 IPAddress ipAddress = ipHostInfo.AddressList[0];
 ```
 
+常见异常
+
+**SocketTimeoutException**
+
+> 超时异常
+>
+> 连接超时和读取超时
+
+**BindException**
+
+> 绑定异常
+>
+> 端口被占用
+
+**ConnectException**
+
+> 连接异常
+>
+> 目标端口不可用
+
+**SocketException: Socket is closed**
+
+> 连接关闭
+>
+> 关闭连接后继续尝试通信
+
+**SocketException：Connection reset  Socket write error**
+
+> 通信异常
+>
+> 连接关闭后继续尝试读写数据
+

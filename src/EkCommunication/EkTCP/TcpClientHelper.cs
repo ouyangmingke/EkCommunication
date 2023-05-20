@@ -1,4 +1,7 @@
-﻿using System.Net;
+﻿using EkTools.EkLog;
+
+using System;
+using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
@@ -32,7 +35,7 @@ namespace EkCommunication.EkTCP
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        public async Task<bool> SendMessage(string message)
+        public async Task<bool> SendMessage(byte[] data)
         {
             try
             {
@@ -51,8 +54,8 @@ namespace EkCommunication.EkTCP
                 }
                 // 获取当前连接的网络传输流
                 var networkStream = tcpClient.GetStream();
-                byte[] data = Encoding.UTF8.GetBytes(message);
-                // 写入数据
+                //byte[] res = Encoding.UTF8.GetBytes(message);
+                //写入数据
                 await networkStream.WriteAsync(data, 0, data.Length);
             }
             catch (Exception e)
@@ -64,6 +67,38 @@ namespace EkCommunication.EkTCP
             }
             autoResetEvent.Set();
             return true;
+        }
+
+        public async Task<byte[]> ReadAsync(byte[] data)
+        {
+            try
+            {
+                if (!tcpClient.Connected)
+                    tcpClient.Connect(_targetIpEndPoint);
+            }
+            catch (Exception w)
+            {
+                Console.WriteLine("连接失败" + w.Message + "\n");
+                autoResetEvent.Set();
+            }
+            // 获取当前连接的网络传输流
+            var networkStream = tcpClient.GetStream();
+            await networkStream.WriteAsync(data, 0, data.Length);
+            var memoryStream = new MemoryStream();
+            var bytes = new byte[1024];
+            int bytesRead=0;
+            while ((bytesRead = await networkStream.ReadAsync(bytes, 0, 1024)) != 0)
+            {
+                if (bytesRead > 0)
+                {
+                    memoryStream.Write(bytes, 0, bytesRead);
+                    break;
+                }
+            }
+            var value = memoryStream.ToArray();
+            memoryStream.Dispose();
+            return value;
+
         }
     }
 }

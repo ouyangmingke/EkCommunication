@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\EkCommunication.EKSerialPort\EkCommunication.EKSerialPort.csproj" />
+    <ProjectReference Include="..\EkCommunication\EkCommunication.csproj" />
+  </ItemGroup>
+
+</Project>
