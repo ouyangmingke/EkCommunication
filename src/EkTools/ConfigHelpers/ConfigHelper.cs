@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 
-namespace EkTools
+namespace EkTools.ConfigHelpers
 {
     public class ConfigHelper
     {
