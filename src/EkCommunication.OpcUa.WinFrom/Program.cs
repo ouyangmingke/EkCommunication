@@ -1,4 +1,6 @@
-namespace WinFormsAppCore
+using WinFormsAppCore;
+
+namespace EkCommunication.OpcUa.WinFrom
 {
     internal static class Program
     {

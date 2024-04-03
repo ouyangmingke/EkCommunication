@@ -1,4 +1,4 @@
-﻿namespace OpcUaTool
+﻿namespace EkCommunication.OpcUa.WinFrom.OpcUas
 {
     public class BiesseModel
     {

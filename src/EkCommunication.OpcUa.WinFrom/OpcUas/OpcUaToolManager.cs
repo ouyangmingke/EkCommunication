@@ -4,7 +4,7 @@ using Microsoft.Extensions.Logging;
 
 using Opc.Ua;
 
-namespace OpcUaTool
+namespace EkCommunication.OpcUa.WinFrom.OpcUas
 {
     public class OpcUaToolManager
     {
@@ -15,7 +15,7 @@ namespace OpcUaTool
         public OpcUaToolManager(ILoggerFactory loggerFactory)
         {
             LoggerFactory = loggerFactory;
-            ClientUtils.Message += (string msg) =>
+            ClientUtils.Message += (msg) =>
             {
                 Logger.LogWarning(msg);
             };
