@@ -1,6 +1,8 @@
 ﻿using RabbitMQ.Client;
 
+using System;
 using System.Text;
+using System.Threading.Channels;
 
 namespace EkCommunication.RabbitMQ
 {
@@ -35,13 +37,16 @@ namespace EkCommunication.RabbitMQ
             RabbitMQProvider();
         }
 
-        private IModel _rabbitMQProvider;
+        /// <summary>
+        /// 信道  出现异常后信道将不可用
+        /// </summary>
+        private IModel _rabbitMQChannel;
 
         private void RabbitMQProvider()
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
+            var factory = new ConnectionFactory() { HostName = "192.168.10.201", UserName = "admin", Password = "public" };
             var connection = factory.CreateConnection();// 连接到 RabbitMQ 节点
-            _rabbitMQProvider = connection.CreateModel();
+            _rabbitMQChannel = connection.CreateModel();// 创建信道
         }
 
         /// <summary>
@@ -53,32 +58,46 @@ namespace EkCommunication.RabbitMQ
             // 声明发布队列
             // 声明后不允许 使用不同参数重新定义现有队列
             // 并且会向任何尝试这样做的程序返回错误
-            var queueDeclareOk = _rabbitMQProvider.QueueDeclare(
+            var queueDeclareOk = _rabbitMQChannel.QueueDeclare(
                 queue: _queueName,// 队列名称
                 durable: false,// 标记是否将队列持久化 
                 exclusive: false,
                 autoDelete: false,
                 arguments: null);
-
+            //try
+            //{
+            //    _rabbitMQChannel.ExchangeDeclarePassive("logs");
+            //}
+            //catch (Exception e)
+            //{
+            //    //出现异常后信道将不可用
+            //}
             // 创建一个队列交换器
-            _rabbitMQProvider.ExchangeDeclare(
-                exchange: "logs", // 交换器名称
-                type: ExchangeType.Topic);// 交换器类型
+            _rabbitMQChannel.ExchangeDeclare(
+            exchange: "logs", // 交换器名称
+            type: ExchangeType.Topic);// 交换器类型
 
             // 将队列绑定到交换器
-            _rabbitMQProvider.QueueBind(
+            _rabbitMQChannel.QueueBind(
                 queue: _queueName,// 队列
                 exchange: "logs",// 交换器
                 routingKey: "routing.#"); // 路由键
-
+            // 把 MyExchangeName 交换机中的消息 根据路由键 转发到 logs 交换机 
+            // 注意目标交换机类型 
+            _rabbitMQChannel.ExchangeBind(
+                "logs",
+                "MyExchangeName",
+                "MyApp.Product.StockChange"
+                );
             // 声明回调队列
-            _rabbitMQProvider.QueueDeclare(
+            _rabbitMQChannel.QueueDeclare(
                 queue: _replyQueueName,
                 durable: false,// 标记是否将队列持久化 
                 exclusive: false,
                 autoDelete: false,
                 arguments: null);
 
+            var queueName = _rabbitMQChannel.QueueDeclare();
 
         }
 
@@ -92,13 +111,13 @@ namespace EkCommunication.RabbitMQ
             // 注意事项
             // 如果所有工作人员都很忙，队列可能会被填满。
             // 可增加更多的工人，或者有一些其他的策略。
-            //_rabbitMQProvider.BasicQos(
+            //_rabbitMQChannel.BasicQos(
             //    prefetchSize: 0,// 预读取大小
             //    prefetchCount: 1, // 预读取数量
             //    global: false);// 全局化
 
             // 创建消息属性
-            var properties = _rabbitMQProvider.CreateBasicProperties();
+            var properties = _rabbitMQChannel.CreateBasicProperties();
             properties.Persistent = false;// 标记是否将消息持久化
 
             // 回复队列
@@ -113,7 +132,7 @@ namespace EkCommunication.RabbitMQ
             var routingKey = $"routing.{_ServerName}.T1";
             // 发送消息
 
-            _rabbitMQProvider.BasicPublish(
+            _rabbitMQChannel.BasicPublish(
             exchange: "logs",// 交换器，消息将发至指定交换器
             routingKey: routingKey,//路由键 
             basicProperties: properties,// 消息属性
